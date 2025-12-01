@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
@@ -35,6 +36,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -90,7 +92,7 @@ class MainActivity : ComponentActivity() {
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = { /* do something */ },
-                            content = { Icon(Icons.Filled.Add, contentDescription = "Add")})
+                            content = { Icon(Icons.Filled.Check, contentDescription = "Check")})
                     }
                 ) { innerPadding ->
                     MyApp(innerPadding)
@@ -115,7 +117,11 @@ fun MyApp(innerPadding: PaddingValues) {
             .padding(innerPadding)
     ) {
 
-        PrimaryTabRow(selectedTabIndex = state) {
+        PrimaryTabRow(selectedTabIndex = state,
+            //Coloring is a maybe
+//            containerColor = Color.Cyan,
+//            contentColor = Color.White
+        ) {
             titles.forEachIndexed { index, title ->
                 Tab(
                     selected = state == index,
