@@ -4,47 +4,54 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.mywhatsapp.data.DataSource
+import com.example.mywhatsapp.model.Contact
 import com.example.mywhatsapp.ui.theme.MyWhatsAppTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -106,13 +113,42 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+//val pagerState = rememberPagerState(pageCount = {
+//    3
+//})
+//
+//HorizontalPager(state = pagerState) { page ->
+//    ChatScreen()
+//    Text(
+//        text = "Page: $page",
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(100.dp)
+//    )
+//}
+//
+//// scroll to page
+//val coroutineScope = rememberCoroutineScope()
+//Button(onClick = {
+//    coroutineScope.launch {
+//        // Call scroll to on pagerState
+//        pagerState.animateScrollToPage(2)
+//    }
+//}, modifier = Modifier.align(Alignment.BottomCenter)) {
+//    Text("Jump to Page 2")
+//}
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun MyApp(innerPadding: PaddingValues) {
 
-    var state by remember { mutableStateOf(0) }
     val titles = listOf("Chats", "Novedades", "Llamadas")
+
+    // 1. Pager State (3 páginas = las tabs)
+    val pagerState = rememberPagerState(pageCount = { titles.size })
+
+    // 2. Necesario para animar el scroll del pager
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -120,55 +156,78 @@ fun MyApp(innerPadding: PaddingValues) {
             .padding(innerPadding)
     ) {
 
-        PrimaryTabRow(selectedTabIndex = state,
-            //Coloring is a maybe
-//            containerColor = Color.Cyan,
-//            contentColor = Color.White
+        // 3. LAS TABS
+        PrimaryTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            containerColor = Color.Cyan,
+            contentColor = Color.Black
         ) {
             titles.forEachIndexed { index, title ->
                 Tab(
-                    selected = state == index,
-                    onClick = { state = index },
-                    text = {
-                        Text(
-                            text = title,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        // Al tocar la tab → saltar a esa página del pager
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = { Text(title) }
                 )
             }
         }
-        when(state) {
-            0 -> {ChatScreen()}
-            1 -> {NewsScreen()}
-            2 -> {CallsScreen()}
+
+        // 4. EL HORIZONTAL PAGER (REEMPLAZA AL "when(state)")
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
+            when(page) {
+                0 -> ChatScreen()
+                1 -> NewsScreen()
+                2 -> CallsScreen()
+            }
         }
     }
 }
 
-@Composable
-fun ChatScreen() {
-    Text(
-        modifier = Modifier
-            .padding(top = 24.dp),
-        text = "Chat tab  selected",
-        style = MaterialTheme.typography.bodyLarge,
-    )
 
-    LazyColumn{
-        ContactCard()
+@Composable
+fun ContactCard(contact: Contact, modifier: Modifier = Modifier) {
+    Row {
+        Image(
+            painter = painterResource(id = contact.contactImage),
+            contentDescription = contact.name,
+            modifier = modifier
+                .size(100.dp)
+                .clip(CircleShape)
+        )
+        Text(
+            text = contact.name,
+            fontSize = 24.sp)
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ContactCard() {
-    Row {
-        Image(
-            painter = painterResource(R.drawable.tenma),
-            contentDescription = "Tenma"
-        )
-        Text(text = "Matsukaze Tenma")
+fun ChatScreen() {
+    val contactos = DataSource.contacts.groupBy {it.anime}
+
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        contactos.forEach { (anime, contact) ->
+            stickyHeader {
+                Text(
+                    text = anime,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray),
+                    fontSize = 32.sp
+                )
+            }
+            items(contact) { contacto ->
+                ContactCard(contacto)
+            }
+        }
+
     }
 }
 
