@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -23,9 +25,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -44,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -192,8 +198,15 @@ fun MyApp(innerPadding: PaddingValues) {
 
 
 @Composable
-fun ContactCard(contact: Contact, modifier: Modifier = Modifier) {
-    Row {
+fun ContactCard(
+    contact: Contact,
+    modifier: Modifier = Modifier,
+    onLongPress: () -> Unit
+) {
+    Row (modifier = Modifier
+        .pointerInput(contact) {
+            detectTapGestures(onLongPress = { onLongPress() })
+        }) {
         Image(
             painter = painterResource(id = contact.contactImage),
             contentDescription = contact.name,
@@ -203,14 +216,18 @@ fun ContactCard(contact: Contact, modifier: Modifier = Modifier) {
         )
         Text(
             text = contact.name,
-            fontSize = 24.sp)
+            fontSize = 24.sp
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ChatScreen() {
-    val contactos = DataSource.contacts.groupBy {it.anime}
+    val contactos = DataSource.contacts.groupBy { it.anime }
+
+    // State to track which contact's dropdown is open
+    var expandedContactId by remember { mutableStateOf<Int?>(null) }
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         contactos.forEach { (anime, contact) ->
@@ -224,10 +241,26 @@ fun ChatScreen() {
                 )
             }
             items(contact) { contacto ->
-                ContactCard(contacto)
+                // Create a Box to position the dropdown relative to the contact card
+                Box {
+                    ContactCard(
+                        contacto,
+                        modifier = Modifier,
+                        onLongPress = {
+                            expandedContactId = contacto.id
+                        }
+                    )
+
+                    // Show dropdown menu for this specific contact if it's the one that was long-pressed
+                    if (expandedContactId == contacto.id) {
+                        ContactDropDownMenu(
+                            expanded = true,
+                            onDismissRequest = { expandedContactId = null }
+                        )
+                    }
+                }
             }
         }
-
     }
 }
 
@@ -249,4 +282,38 @@ fun CallsScreen() {
         text = "Llamadas tab  selected",
         style = MaterialTheme.typography.bodyLarge,
     )
+}
+
+@Composable
+fun ContactDropDownMenu(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier.padding(16.dp)
+    ) {
+        DropdownMenuItem(
+            text = { Text("Añadir a favoritos") },
+            onClick = {
+                /* Do something... */
+                onDismissRequest()
+            }
+        )
+        DropdownMenuItem(
+            text = { Text("Llamar") },
+            onClick = {
+                /* Do something... */
+                onDismissRequest()
+            }
+        )
+        DropdownMenuItem(
+            text = { Text("Eliminar Contacto") },
+            onClick = {
+                /* Do something... */
+                onDismissRequest()
+            }
+        )
+    }
 }
