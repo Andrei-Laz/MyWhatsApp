@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,10 +24,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -88,13 +85,13 @@ class MainActivity : ComponentActivity() {
                             },
                             actions = {
                                 Row {
-                                    IconButton(onClick = { /* do something */ }) {
+                                    IconButton(onClick = { /* Implement later */ }) {
                                         Icon(
                                             imageVector = Icons.Filled.Search,
                                             contentDescription = "Localized description"
                                         )
                                     }
-                                    IconButton(onClick = { /* do something */ }) {
+                                    IconButton(onClick = { /* Implement later */ }) {
                                         Icon(
                                             imageVector = Icons.Filled.Share,
                                             contentDescription = "Localized description"
@@ -107,42 +104,17 @@ class MainActivity : ComponentActivity() {
                     },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = { /* do something */ },
+                            onClick = { /* Implement later */ },
                             content = { Icon(Icons.Filled.Check, contentDescription = "Check")})
                     }
                 ) { innerPadding ->
                     MyApp(innerPadding)
 
-                    //FAB
                 }
             }
         }
     }
 }
-//val pagerState = rememberPagerState(pageCount = {
-//    3
-//})
-//
-//HorizontalPager(state = pagerState) { page ->
-//    ChatScreen()
-//    Text(
-//        text = "Page: $page",
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(100.dp)
-//    )
-//}
-//
-//// scroll to page
-//val coroutineScope = rememberCoroutineScope()
-//Button(onClick = {
-//    coroutineScope.launch {
-//        // Call scroll to on pagerState
-//        pagerState.animateScrollToPage(2)
-//    }
-//}, modifier = Modifier.align(Alignment.BottomCenter)) {
-//    Text("Jump to Page 2")
-//}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -150,10 +122,8 @@ fun MyApp(innerPadding: PaddingValues) {
 
     val titles = listOf("Chats", "Novedades", "Llamadas")
 
-    // 1. Pager State (3 páginas = las tabs)
     val pagerState = rememberPagerState(pageCount = { titles.size })
 
-    // 2. Necesario para animar el scroll del pager
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -162,7 +132,6 @@ fun MyApp(innerPadding: PaddingValues) {
             .padding(innerPadding)
     ) {
 
-        // 3. LAS TABS
         PrimaryTabRow(
             selectedTabIndex = pagerState.currentPage,
             containerColor = Color.Cyan,
@@ -172,7 +141,6 @@ fun MyApp(innerPadding: PaddingValues) {
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = {
-                        // Al tocar la tab → saltar a esa página del pager
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(index)
                         }
@@ -182,7 +150,6 @@ fun MyApp(innerPadding: PaddingValues) {
             }
         }
 
-        // 4. EL HORIZONTAL PAGER (REEMPLAZA AL "when(state)")
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
@@ -198,15 +165,19 @@ fun MyApp(innerPadding: PaddingValues) {
 
 
 @Composable
-fun ContactCard(
+fun ContactSheet(
     contact: Contact,
     modifier: Modifier = Modifier,
     onLongPress: () -> Unit
 ) {
-    Row (modifier = Modifier
-        .pointerInput(contact) {
-            detectTapGestures(onLongPress = { onLongPress() })
-        }) {
+    Row(
+        modifier = Modifier
+            .pointerInput(contact) {
+                detectTapGestures(onLongPress = { onLongPress() })
+            }
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Image(
             painter = painterResource(id = contact.contactImage),
             contentDescription = contact.name,
@@ -216,7 +187,9 @@ fun ContactCard(
         )
         Text(
             text = contact.name,
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            modifier = modifier
+                .padding(15.dp)
         )
     }
 }
@@ -226,7 +199,6 @@ fun ContactCard(
 fun ChatScreen() {
     val contactos = DataSource.contacts.groupBy { it.anime }
 
-    // State to track which contact's dropdown is open
     var expandedContactId by remember { mutableStateOf<Int?>(null) }
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -243,7 +215,7 @@ fun ChatScreen() {
             items(contact) { contacto ->
                 // Create a Box to position the dropdown relative to the contact card
                 Box {
-                    ContactCard(
+                    ContactSheet(
                         contacto,
                         modifier = Modifier,
                         onLongPress = {
@@ -251,7 +223,6 @@ fun ChatScreen() {
                         }
                     )
 
-                    // Show dropdown menu for this specific contact if it's the one that was long-pressed
                     if (expandedContactId == contacto.id) {
                         ContactDropDownMenu(
                             expanded = true,
@@ -297,21 +268,21 @@ fun ContactDropDownMenu(
         DropdownMenuItem(
             text = { Text("Añadir a favoritos") },
             onClick = {
-                /* Do something... */
+                /* Implement later */
                 onDismissRequest()
             }
         )
         DropdownMenuItem(
             text = { Text("Llamar") },
             onClick = {
-                /* Do something... */
+                /* Implement later */
                 onDismissRequest()
             }
         )
         DropdownMenuItem(
             text = { Text("Eliminar Contacto") },
             onClick = {
-                /* Do something... */
+                /* Implement later */
                 onDismissRequest()
             }
         )
