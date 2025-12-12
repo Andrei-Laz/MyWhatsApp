@@ -4,9 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +27,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.DropdownMenu
@@ -103,9 +106,22 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     floatingActionButton = {
+                        val image = AnimatedImageVector.animatedVectorResource(R.drawable.ad_rotation)
+                        var atEnd by remember { mutableStateOf(false) }
+
                         FloatingActionButton(
-                            onClick = { /* Implement later */ },
-                            content = { Icon(Icons.Filled.Check, contentDescription = "Check")})
+                            onClick = { atEnd = !atEnd },
+                            content = {
+                                Image(
+                                    painter = rememberAnimatedVectorPainter(image, atEnd),
+                                    contentDescription = "VectorDrawable",
+                                    modifier = Modifier
+                                        .padding(15.dp)
+                                )
+                            },
+                            modifier = Modifier
+                                .size(65.dp)
+                        )
                     }
                 ) { innerPadding ->
                     MyApp(innerPadding)
@@ -156,8 +172,8 @@ fun MyApp(innerPadding: PaddingValues) {
         ) { page ->
             when(page) {
                 0 -> ChatScreen()
-                1 -> NewsScreen()
-                2 -> CallsScreen()
+                1 -> PauseStartScreen()
+                2 -> SmileScreen()
             }
         }
     }
@@ -236,7 +252,7 @@ fun ChatScreen() {
 }
 
 @Composable
-fun NewsScreen() {
+fun PauseStartScreen() {
     Text(
         modifier = Modifier
             .padding(top = 24.dp),
@@ -246,7 +262,7 @@ fun NewsScreen() {
 }
 
 @Composable
-fun CallsScreen() {
+fun SmileScreen() {
     Text(
         modifier = Modifier
             .padding(top = 24.dp),
