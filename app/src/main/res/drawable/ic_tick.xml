@@ -9,10 +9,10 @@
         android:pivotX="12"
         android:pivotY="12">
         <path
-            android:name="add"
+            android:name="tick"
             android:strokeColor="#fff"
             android:strokeLineCap="square"
             android:strokeWidth="2"
-            android:pathData="M12,0L12,24M0,12,L24,12" />
+            android:pathData="M4.8,13.4 L9,17.6 M10.4,16.2 L19.6,7" />
     </group>
 </vector>

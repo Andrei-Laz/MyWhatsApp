@@ -106,7 +106,8 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     floatingActionButton = {
-                        val image = AnimatedImageVector.animatedVectorResource(R.drawable.ad_rotation)
+                        val image =
+                            AnimatedImageVector.animatedVectorResource(R.drawable.ad_rotation)
                         var atEnd by remember { mutableStateOf(false) }
 
                         FloatingActionButton(
