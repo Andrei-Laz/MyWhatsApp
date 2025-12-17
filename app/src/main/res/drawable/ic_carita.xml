@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="256dp"
+    android:height="256dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <group
+        android:name="groupanimation"
+        android:pivotX="12"
+        android:pivotY="12">
+        <path
+            android:name="cara"
+            android:strokeColor="#FFFF00"
+            android:fillColor="#FFFF00"
+            android:strokeLineCap="square"
+            android:strokeWidth="2"
+            android:pathData="M 50,50 m -48,0 a 48,48 0 1,0 96,0 a 48,48 0 1,0 -96,0"/>
+        <path
+            android:name="ojo_l"
+            android:strokeColor="#000000"
+            android:fillColor="#000000"
+            android:strokeLineCap="square"
+            android:strokeWidth="2"
+            android:pathData="M 35,40 m -7,0 a 7,7 0 1,0 14,0 a 7,7 0 1,0 -14,0"/>
+        <path
+            android:name="ojo_r"
+            android:strokeColor="#000000"
+            android:fillColor="#000000"
+            android:strokeLineCap="square"
+            android:strokeWidth="2"
+            android:pathData="M 65,40 m -7,0 a 7,7 0 1,0 14,0 a 7,7 0 1,0 -14,0"/>
+        <path
+            android:name="tristeza"
+            android:strokeColor="#000000"
+            android:fillColor="#000000"
+            android:strokeLineCap="square"
+            android:strokeWidth="2"
+            android:pathData="M 30,75 Q 50,55 70,75"/>
+        <path
+            android:name="sonrisa"
+            android:strokeColor="#000000"
+            android:fillColor="#000000"
+            android:strokeLineCap="square"
+            android:strokeWidth="2"
+            android:pathData="M 30,65 Q 50,85 70,65"/>
+    </group>
+</vector>

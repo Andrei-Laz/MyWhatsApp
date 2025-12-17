@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+        android:duration="3000"
+        android:propertyName="pathData"
+        android:valueFrom="M 6 5 L 6 19 L 10 19 L 10 5 Z"
+        android:valueTo="M 8 5.14 L 8 19.14 L 11.456 16.661 L 11.456 7.339 Z"
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:valueType="pathType"/>
+</set>
