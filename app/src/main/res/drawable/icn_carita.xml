@@ -15,25 +15,44 @@
             android:strokeLineCap="square"
             android:strokeWidth="2"
             android:pathData="M 50,50 m -48,0 a 48,48 0 1,0 96,0 a 48,48 0 1,0 -96,0"/>
+
+<!--dependiendo de si se quiere empezar con los ojos abiertos o cerrados se descomenta una o la otra path
+    tener en cuenta también la necesidad de cambiar el archivo xml de transformación-->
+
         <path
-            android:name="ojo_l"
+            android:name="ojo_l_open"
             android:strokeColor="#000000"
             android:fillColor="#000000"
-            android:strokeLineCap="square"
+            android:strokeLineCap="round"
             android:strokeWidth="2"
-            android:pathData="M 35,40 m -7,0 a 7,7 0 1,0 14,0 a 7,7 0 1,0 -14,0"/>
+            android:pathData="M 25,30 Q 35,30 45,30"/>
+<!--        <path-->
+<!--            android:name="ojo_l_closed"-->
+<!--            android:strokeColor="#FFFF00"-->
+<!--            android:fillColor="#FFFF00"-->
+<!--            android:strokeLineCap="square"-->
+<!--            android:Width="2"-->
+<!--            android:pathData="M 25,30 Q 35,47 45,30"/>-->
         <path
-            android:name="ojo_r"
+            android:name="ojo_r_open"
             android:strokeColor="#000000"
             android:fillColor="#000000"
-            android:strokeLineCap="square"
+            android:strokeLineCap="round"
             android:strokeWidth="2"
-            android:pathData="M 65,40 m -7,0 a 7,7 0 1,0 14,0 a 7,7 0 1,0 -14,0"/>
+            android:pathData="M 55,30 Q 65,30 75,30"/>
+<!--        <path-->
+<!--            android:name="ojo_r_closed"-->
+<!--            android:strokeColor="#000000"-->
+<!--            android:fillColor="#000000"-->
+<!--            android:strokeLineCap="square"-->
+<!--            android:strokeWidth="2"-->
+<!--            android:pathData="M 55,30 Q 65,47 75,30"/>-->
+
 
 <!--dependiendo de si se quiere empezar con la carita sonriendo o siedo triste se descomenta una o la otra path
     tener en cuenta también la necesidad de cambiar el archivo xml de transformación-->
 <!--        <path-->
-<!--            android:name="llanto"-->
+<!--            android:name="triste"-->
 <!--            android:strokeColor="#000000"-->
 <!--            android:strokeLineCap="square"-->
 <!--            android:strokeWidth="2"-->

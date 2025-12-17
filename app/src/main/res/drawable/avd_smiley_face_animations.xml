@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/icn_carita">
+
+    <target
+        android:name="sonrisa"
+        android:animation="@anim/smile_to_frown" />
+    <target
+        android:name="ojo_r_open"
+        android:animation="@anim/r_eye_transformation" />
+    <target
+        android:name="ojo_l_open"
+        android:animation="@anim/l_eye_transformation" />
+</animated-vector>

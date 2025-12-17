@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/ic_carita">
-
+    android:drawable="@drawable/icn_tick">
     <target
-        android:name="llanto"
-        android:animation="@anim/triste_to_feliz" />
+        android:name="groupanimation"
+        android:animation="@anim/general_rotation" />
 </animated-vector>
