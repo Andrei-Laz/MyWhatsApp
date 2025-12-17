@@ -284,7 +284,7 @@ fun SmileScreen() {
         contentDescription = "VectorDrawable",
         modifier = Modifier
             .clickable { atEnd = !atEnd }
-            .size(150.dp)
+            .size(250.dp)
     )
 }
 

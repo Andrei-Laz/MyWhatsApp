@@ -3,6 +3,6 @@
     android:drawable="@drawable/ic_carita">
 
     <target
-        android:name="tristeza"
+        android:name="llanto"
         android:animation="@anim/triste_to_feliz" />
 </animated-vector>
