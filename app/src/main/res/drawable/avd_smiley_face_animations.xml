@@ -6,9 +6,9 @@
         android:name="sonrisa"
         android:animation="@anim/smile_to_frown" />
     <target
-        android:name="ojo_r_open"
-        android:animation="@anim/r_eye_transformation" />
+        android:name="ceja_r_open"
+        android:animation="@anim/r_eyelid_transformation" />
     <target
-        android:name="ojo_l_open"
-        android:animation="@anim/l_eye_transformation" />
+        android:name="ceja_l_open"
+        android:animation="@anim/l_eyelid_transformation" />
 </animated-vector>

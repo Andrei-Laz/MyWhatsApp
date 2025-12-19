@@ -266,7 +266,7 @@ fun PauseStartScreen() {
             contentDescription = "VectorDrawable",
             modifier = Modifier
                 .clickable { atEnd = !atEnd }
-                .size(350.dp)
+                .size(300.dp)
         )
     }
 }
